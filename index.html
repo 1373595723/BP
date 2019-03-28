@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			.box{
+				width: 350px;
+				height: 350px;
+				border: 1px solid black;
+				position: relative;
+				margin-left: 50px;
+				margin-top: 50px;
+			}
+			img{
+				vertical-align: top;
+			}
+			.box #small{
+				width: 350px;
+				height: 350px;
+				position: relative;
+			}
+			.box #small #mask{
+				width: 100px;
+				height: 100px;
+				background-color: palegoldenrod;
+				opacity: 0.3;
+				position: absolute;
+				top: 0;
+				left: 0;
+				cursor: move;
+				display: none;
+			}
+			.box #big{
+				width: 500px;
+				height: 500px;
+				border: 1px solid black;
+				margin-top: -350px;
+				margin-left: 400px;
+				overflow: hidden;
+				display: none;
+				position: relative;
+			}
+			#bigImg{
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<div id="small">
+				<img src="img/001.jpg" />
+				<div id="mask"></div>
+			</div>
+			<div id="big">
+				<img src="img/0001.jpg" id="bigImg"/>
+			</div>
+		</div>
+	</body>
+	<script>
+		var box=document.getElementsByClassName("box")[0];
+		var small=document.getElementById("small");
+		var mask=document.getElementById("mask");
+		var big=document.getElementById("big");
+		var bigImg=document.getElementById("bigImg");
+		box.onmousemove=function(){
+			mask.style.display="block";
+			big.style.display="block";
+		}
+		box.onmouseout=function(){
+			mask.style.display="none";
+			big.style.display="none";
+		}
+		small.onmousemove=function(){
+			var event=event || window.event;
+			var left=event.clientX-box.offsetLeft-mask.offsetWidth/2;
+			var top=event.clientY-box.offsetTop-mask.offsetHeight/2;
+			//判断是否会越出边界
+			if(left<=0){
+				left=0;
+			}else if(left>=box.offsetWidth-mask.offsetWidth){
+				left=box.offsetWidth-mask.offsetWidth;
+			}
+			if(top<=0){
+				top=0;
+			}else if(top>=box.offsetHeight-mask.offsetHeight){
+				top=box.offsetHeight-mask.offsetHeight;
+			}
+			mask.style.left=left+"px";
+			mask.style.top=top+"px";
+			//大图移动的距离
+			bigImg.style.left=-left*(big.offsetWidth/small.offsetWidth)+"px";
+			bigImg.style.top=-top*(big.offsetHeight/small.offsetHeight)+"px";
+		}
+	</script>
+</html>
